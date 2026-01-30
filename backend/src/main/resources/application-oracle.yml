@@ -1,0 +1,51 @@
+spring:
+  # Oracle Database Configuration
+  datasource:
+    url: jdbc:oracle:thin:@${DB_HOST:localhost}:${DB_PORT:1521}:${DB_SID:XE}
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: ${DB_USERNAME:system}
+    password: ${DB_PASSWORD:oracle}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1 FROM DUAL
+  
+  # JPA Configuration for Oracle
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+        # Oracle-specific optimizations
+        use_sql_comments: true
+        generate_statistics: false
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.affiliate.shortlink: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    name: logs/application.log
+    max-size: 10MB
+    max-history: 30
+
+# Oracle-specific notes:
+# 1. Make sure Oracle JDBC driver is in pom.xml
+# 2. For Oracle XE (free version): Use SID=XE, Port=1521
+# 3. For Oracle Enterprise: Adjust connection string accordingly
+# 4. Enable JSON support: Oracle 12c+ has native JSON support

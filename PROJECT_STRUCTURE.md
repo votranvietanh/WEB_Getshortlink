@@ -198,12 +198,14 @@ WEB_Getshortlink/
 │   │   ├── router/                  # Vue Router
 │   │   │   └── index.js
 │   │   │
-│   │   ├── store/                   # Pinia Stores
-│   │   │   ├── auth.js
-│   │   │   ├── link.js
-│   │   │   ├── shopee.js
-│   │   │   ├── analytics.js
-│   │   │   └── ui.js
+│   │   ├── store/                   # Vuex Store
+│   │   │   ├── index.js            # Store configuration
+│   │   │   ├── modules/
+│   │   │   │   ├── auth.js
+│   │   │   │   ├── link.js
+│   │   │   │   ├── shopee.js
+│   │   │   │   ├── analytics.js
+│   │   │   │   └── ui.js
 │   │   │
 │   │   ├── services/                # API Services
 │   │   │   ├── api.js               # Axios Instance
@@ -220,17 +222,18 @@ WEB_Getshortlink/
 │   │   │   ├── helpers.js
 │   │   │   └── storage.js
 │   │   │
-│   │   ├── composables/             # Vue Composables
-│   │   │   ├── useAuth.js
-│   │   │   ├── useLink.js
-│   │   │   ├── useAnalytics.js
-│   │   │   └── useNotification.js
+│   │   ├── mixins/                  # Vue Mixins
+│   │   │   ├── authMixin.js
+│   │   │   ├── linkMixin.js
+│   │   │   └── notificationMixin.js
 │   │   │
 │   │   ├── App.vue                  # Root Component
 │   │   └── main.js                  # Entry Point
 │   │
 │   ├── package.json
-│   ├── vite.config.js
+│   ├── vue.config.js                # Vue CLI Configuration
+│   ├── babel.config.js              # Babel Configuration
+│   ├── .eslintrc.js                 # ESLint Configuration
 │   ├── Dockerfile
 │   ├── .env.example
 │   └── .dockerignore
@@ -341,11 +344,12 @@ WEB_Getshortlink/
 - **LinkManager**: Link management page
 - **Analytics**: Analytics page
 
-#### 3. Store (Pinia)
-- **auth**: Authentication state
-- **link**: Links state
+#### 3. Store (Vuex)
+- **auth**: Authentication state and actions
+- **link**: Links state and mutations
 - **shopee**: Shopee products state
 - **analytics**: Analytics data state
+- **ui**: UI state (modals, loading, etc.)
 
 #### 4. Services
 - **api.js**: Axios configuration
@@ -374,31 +378,31 @@ WEB_Getshortlink/
 ## Technology Stack Summary
 
 ### Backend
-- Java 17
-- Spring Boot 3.x
-- Spring Security
-- Spring Data JPA
-- PostgreSQL
-- Redis
-- JWT
-- Swagger/OpenAPI
+- **Java 8** (LTS version, widely compatible)
+- **Spring Boot 2.7.x** (latest version supporting Java 8)
+- **Spring Security** (JWT authentication)
+- **Spring Data JPA** (ORM layer)
+- **H2 Database** (Development - in-memory, zero config)
+- **MySQL 5.7+** (Production - reliable and popular)
+- **Redis** (Optional - for caching in production)
+- **JWT** (JSON Web Tokens for auth)
+- **Swagger 2.x** (API documentation)
 
 ### Frontend
-- Vue.js 3
-- Vite
-- Pinia
-- Vue Router
-- Axios
-- Element Plus
-- Chart.js
+- **Vue.js 2.6.14** (stable, mature ecosystem)
+- **Vue CLI 4.x** (project scaffolding and build)
+- **Vuex 3.x** (state management)
+- **Vue Router 3.x** (routing)
+- **Axios** (HTTP client)
+- **Element UI 2.15.x** (UI component library)
+- **Chart.js** (data visualization)
 
 ### DevOps
-- Docker
-- Docker Compose
-- Nginx
-- GitHub Actions
-- PostgreSQL
-- Redis
+- **Docker** (containerization)
+- **Docker Compose** (multi-container orchestration)
+- **Nginx** (reverse proxy)
+- **Maven** (Java build tool)
+- **NPM** (JavaScript package manager)
 
 ---
 
@@ -418,7 +422,11 @@ WEB_Getshortlink/
 
 3. **Database Setup**
    ```bash
-   psql -U postgres -d affiliate_db -f database/schema.sql
+   # Development: H2 runs automatically, no setup needed
+   
+   # Production (MySQL):
+   mysql -u root -p -e "CREATE DATABASE affiliate_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   mysql -u root -p affiliate_db < database/schema.sql
    ```
 
 4. **Docker Development**

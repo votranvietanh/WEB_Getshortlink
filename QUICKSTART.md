@@ -1,280 +1,151 @@
 # Quick Start Guide - Shopee Affiliate Link Shortener
 
-## 🚀 Bắt Đầu Nhanh trong 5 Phút
+## Yêu Cầu Hệ Thống
 
-### Bước 1: Clone & Setup (1 phút)
+### Backend
+- **Java 8** (JDK 1.8.0_201 hoặc cao hơn)
+- **Maven 3.6+** (hoặc sử dụng Maven Wrapper đã có sẵn)
+- **H2 Database** (tự động, không cần cài đặt)
+- **MySQL 5.7+** (chỉ cho production, optional)
 
-```bash
-# Clone repository
-git clone https://github.com/yourname/WEB_Getshortlink.git
-cd WEB_Getshortlink
+### Frontend
+- **Node.js 12.x** hoặc cao hơn (khuyến nghị 14.x hoặc 16.x)
+- **NPM 6.x+** hoặc **Yarn 1.x+**
 
-# Copy environment file
-cp .env.example .env
-```
-
-### Bước 2: Cấu Hình Environment (2 phút)
-
-Mở file `.env` và điền thông tin:
-
-```env
-# Database
-DB_PASSWORD=postgres123
-
-# Shopee API (Lấy từ https://open.shopee.com/)
-SHOPEE_API_KEY=your_api_key_here
-SHOPEE_API_SECRET=your_api_secret_here
-SHOPEE_AFFILIATE_ID=your_affiliate_id_here
-
-# JWT Secret
-JWT_SECRET=change-this-to-random-string
-```
-
-### Bước 3: Chạy với Docker (2 phút)
-
-```bash
-# Start tất cả services
-docker-compose up -d
-
-# Kiểm tra status
-docker-compose ps
-
-# Xem logs
-docker-compose logs -f
-```
-
-### Bước 4: Truy Cập Ứng Dụng
-
-- **Frontend**: http://localhost
-- **Backend API**: http://localhost:8080
-- **API Docs**: http://localhost:8080/swagger-ui.html
-- **Database Admin**: http://localhost:8082 (Adminer)
-- **Redis Admin**: http://localhost:8083 (Redis Commander)
+### Optional
+- **Docker** và **Docker Compose** (nếu muốn chạy bằng container)
+- **Git** (để clone repository)
 
 ---
 
-## 📋 Development Setup (Không dùng Docker)
+## Cài Đặt Nhanh (Development)
 
-### Prerequisites
-
-```bash
-# Kiểm tra Java
-java -version  # Cần Java 17+
-
-# Kiểm tra Node.js
-node -v  # Cần Node 18+
-
-# Kiểm tra PostgreSQL
-psql --version  # Cần PostgreSQL 15+
-
-# Kiểm tra Redis
-redis-cli --version  # Cần Redis 7+
-```
-
-### 1. Setup Database
+### Bước 1: Clone Repository
 
 ```bash
-# Start PostgreSQL
-sudo systemctl start postgresql
-
-# Create database
-sudo -u postgres psql
-CREATE DATABASE affiliate_db;
-CREATE USER postgres WITH PASSWORD 'postgres123';
-GRANT ALL PRIVILEGES ON DATABASE affiliate_db TO postgres;
-\q
-
-# Import schema
-psql -U postgres -d affiliate_db -f database/schema.sql
+git clone <repository-url>
+cd WEB_Getshortlink
 ```
 
-### 2. Setup Redis
+### Bước 2: Cấu Hình Backend
 
+#### 2.1. Kiểm tra Java version
 ```bash
-# Start Redis
-sudo systemctl start redis-server
-
-# Set password
-redis-cli
-CONFIG SET requirepass "redis123"
-CONFIG REWRITE
-exit
+java -version
+# Phải là Java 8 (1.8.x)
 ```
 
-### 3. Run Backend
+#### 2.2. Cấu hình application properties (Optional)
+File `backend/src/main/resources/application-dev.yml` đã được cấu hình sẵn với H2 Database.
 
+Nếu muốn thay đổi cấu hình:
+```yaml
+# H2 Database sẽ tự động chạy in-memory
+# Không cần cấu hình gì thêm!
+
+# Truy cập H2 Console tại: http://localhost:8080/api/h2-console
+# JDBC URL: jdbc:h2:mem:affiliate_db
+# Username: sa
+# Password: (để trống)
+```
+
+#### 2.3. Chạy Backend
 ```bash
 cd backend
 
-# Install dependencies & build
-./mvnw clean install
-
-# Run application
+# Sử dụng Maven Wrapper (khuyến nghị)
 ./mvnw spring-boot:run
 
-# Backend sẽ chạy tại http://localhost:8080
+# Hoặc nếu đã cài Maven
+mvn spring-boot:run
 ```
 
-### 4. Run Frontend
+Backend sẽ chạy tại: **http://localhost:8080**
 
+API Swagger UI: **http://localhost:8080/swagger-ui.html**
+
+H2 Console: **http://localhost:8080/api/h2-console**
+
+### Bước 3: Cấu Hình Frontend
+
+#### 3.1. Cài đặt dependencies
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
 
-# Run dev server
-npm run dev
+# Hoặc sử dụng Yarn
+yarn install
+```
 
-# Frontend sẽ chạy tại http://localhost:5173
+#### 3.2. Cấu hình environment
+File `.env` đã được tạo sẵn với cấu hình mặc định:
+```env
+VUE_APP_API_BASE_URL=http://localhost:8080/api
+VUE_APP_TITLE=Shopee Affiliate Link Shortener
+```
+
+#### 3.3. Chạy Frontend
+```bash
+npm run serve
+
+# Hoặc với Yarn
+yarn serve
+```
+
+Frontend sẽ chạy tại: **http://localhost:8081**
+
+---
+
+## Kiểm Tra Ứng Dụng
+
+1. Mở trình duyệt và truy cập: **http://localhost:8081**
+2. Đăng ký tài khoản mới
+3. Đăng nhập
+4. Tạo link rút gọn đầu tiên
+
+---
+
+## Cấu Hình Shopee API (Bắt buộc để sử dụng tính năng Affiliate)
+
+### 1. Lấy Shopee API Credentials
+
+1. Đăng ký tài khoản Shopee Affiliate tại: https://affiliate.shopee.vn
+2. Truy cập Shopee Open Platform: https://open.shopee.com
+3. Tạo ứng dụng mới và lấy:
+   - Partner ID
+   - Partner Key
+
+### 2. Cấu hình Backend
+
+Tạo file `backend/src/main/resources/application-local.yml`:
+```yaml
+shopee:
+  api:
+    partner-id: YOUR_PARTNER_ID
+    partner-key: YOUR_PARTNER_KEY
+```
+
+Hoặc sử dụng environment variables:
+```bash
+export SHOPEE_PARTNER_ID=your_partner_id
+export SHOPEE_PARTNER_KEY=your_partner_key
 ```
 
 ---
 
-## 🧪 Test API
+## Chạy với Docker (Alternative)
 
-### 1. Register User
-
-```bash
-curl -X POST http://localhost:8080/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "Test123!",
-    "fullName": "Test User"
-  }'
-```
-
-### 2. Login
+### 1. Sử dụng Docker Compose
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "testuser",
-    "password": "Test123!"
-  }'
-```
+# Build và chạy tất cả services
+docker-compose up -d
 
-Lưu `accessToken` từ response.
-
-### 3. Create Short Link
-
-```bash
-curl -X POST http://localhost:8080/api/v1/links \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-  -d '{
-    "originalUrl": "https://shopee.vn/product/123456/789012",
-    "title": "iPhone 15 Pro Max"
-  }'
-```
-
-### 4. Search Shopee Products
-
-```bash
-curl -X GET "http://localhost:8080/api/v1/shopee/products/search?keyword=iphone&limit=10" \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
-```
-
----
-
-## 📚 Tài Liệu Chi Tiết
-
-| Tài Liệu | Mô Tả |
-|----------|-------|
-| [README.md](./README.md) | Tổng quan dự án |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Kiến trúc hệ thống |
-| [FEATURES.md](./FEATURES.md) | Danh sách chức năng |
-| [API.md](./API.md) | API documentation |
-| [DATABASE.md](./DATABASE.md) | Database schema |
-| [DEPLOYMENT.md](./DEPLOYMENT.md) | Hướng dẫn deploy |
-| [SHOPEE_INTEGRATION.md](./SHOPEE_INTEGRATION.md) | Tích hợp Shopee API |
-| [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) | Cấu trúc dự án |
-
----
-
-## 🔧 Troubleshooting
-
-### Backend không start?
-
-```bash
-# Kiểm tra port 8080
-netstat -tulpn | grep 8080
-
-# Kiểm tra logs
-tail -f logs/application.log
-
-# Kiểm tra database connection
-psql -U postgres -h localhost -d affiliate_db
-```
-
-### Frontend không kết nối được Backend?
-
-```bash
-# Kiểm tra VITE_API_URL trong .env
-cat frontend/.env
-
-# Kiểm tra CORS trong backend
-# File: backend/src/main/resources/application.yml
-```
-
-### Docker containers không start?
-
-```bash
 # Xem logs
-docker-compose logs
+docker-compose logs -f
 
-# Restart containers
-docker-compose restart
-
-# Rebuild containers
+# Dừng services
 docker-compose down
-docker-compose up -d --build
-```
-
----
-
-## 🎯 Next Steps
-
-### 1. Cấu Hình Shopee API
-- Đăng ký tài khoản tại https://open.shopee.com/
-- Tạo application và lấy API credentials
-- Cập nhật `.env` với API keys
-
-### 2. Customize Frontend
-- Thay đổi logo và branding
-- Tùy chỉnh màu sắc trong `frontend/src/assets/styles/`
-- Thêm các tính năng mới
-
-### 3. Deploy to Production
-- Đọc [DEPLOYMENT.md](./DEPLOYMENT.md)
-- Setup SSL certificate
-- Configure domain name
-- Setup monitoring
-
-### 4. Add Features
-- Xem [FEATURES.md](./FEATURES.md) cho roadmap
-- Implement A/B testing
-- Add browser extension
-- Create mobile app
-
----
-
-## 📞 Support
-
-### Gặp vấn đề?
-
-1. **Check Documentation**: Đọc các file .md trong thư mục
-2. **Check Logs**: Xem logs của backend, frontend, database
-3. **GitHub Issues**: Tạo issue trên GitHub
-4. **Email**: support@example.com
-
-### Useful Commands
-
-```bash
-# Docker
 docker-compose up -d          # Start all services
 docker-compose down           # Stop all services
 docker-compose logs -f        # View logs

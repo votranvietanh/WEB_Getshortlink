@@ -12,20 +12,22 @@ Hệ thống **Shopee Affiliate Link Shortener** là một nền tảng web cho 
 ### 1.2. Công Nghệ Stack
 
 #### Backend
-- **Framework**: Spring Boot 3.x
-- **Language**: Java 17+
-- **Database**: PostgreSQL
-- **Cache**: Redis
-- **API Documentation**: Swagger/OpenAPI
+- **Framework**: Spring Boot 2.7.x (compatible with Java 8)
+- **Language**: Java 8
+- **Database**: 
+  - **Development**: H2 Database (in-memory, zero configuration)
+  - **Production**: MySQL 5.7+ hoặc PostgreSQL 12+
+- **Cache**: Redis (optional for production)
+- **API Documentation**: Swagger/OpenAPI 2.x
 - **Security**: Spring Security + JWT
 
 #### Frontend
-- **Framework**: Vue.js 3 (Composition API)
-- **UI Library**: Element Plus
-- **State Management**: Pinia
-- **Routing**: Vue Router
+- **Framework**: Vue.js 2.6.14
+- **UI Library**: Element UI 2.15.x
+- **State Management**: Vuex 3.x
+- **Routing**: Vue Router 3.x
 - **HTTP Client**: Axios
-- **Build Tool**: Vite
+- **Build Tool**: Vue CLI 4.x / Webpack 4.x
 
 ---
 
@@ -43,9 +45,9 @@ APPLICATION LAYER (Spring Boot)
 └── Analytics Service
         ↓
 DATA LAYER
-├── PostgreSQL (Primary DB)
-├── Redis (Cache)
-└── MongoDB (Logs)
+├── H2 Database (Development - In-Memory)
+├── MySQL 5.7+ (Production - Primary DB)
+└── Redis (Production - Cache, Optional)
         ↓
 EXTERNAL SERVICES
 └── Shopee GraphAPI
@@ -88,26 +90,31 @@ frontend/
 ### Users Table
 ```sql
 CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     shopee_affiliate_id VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_username (username),
+    INDEX idx_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
 ### Affiliate Links Table
 ```sql
 CREATE TABLE affiliate_links (
-    id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users(id),
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
     short_code VARCHAR(20) UNIQUE NOT NULL,
     original_url TEXT NOT NULL,
     shopee_product_id VARCHAR(100),
     click_count BIGINT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_short_code (short_code),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
 ---
@@ -152,12 +159,21 @@ CREATE TABLE affiliate_links (
 services:
   frontend:
     build: ./frontend
-    ports: ["80:80"]
+    ports: ["8081:80"]
   backend:
     build: ./backend
     ports: ["8080:8080"]
-  postgres:
-    image: postgres:15
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+  mysql:
+    image: mysql:5.7
+    ports: ["3306:3306"]
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: affiliate_db
   redis:
-    image: redis:7-alpine
+    image: redis:6-alpine
+    ports: ["6379:6379"]
 ```
+
+**Lưu ý**: Khi chạy local development, backend sẽ tự động sử dụng H2 in-memory database, không cần MySQL.

@@ -7,17 +7,18 @@ Hệ thống **Shopee Affiliate Link Shortener** là nền tảng web giúp affi
 ## 🏗️ Kiến Trúc Công Nghệ
 
 ### Backend
-- **Spring Boot 3.x** - Framework chính
-- **PostgreSQL** - Database
-- **Redis** - Caching
-- **JWT** - Authentication
-- **Shopee GraphAPI** - Tích hợp sản phẩm
+- **Spring Boot 2.7.x** - Framework chính
+- **Java 8** - Programming language
+- **MySQL 8.0** - Database (dễ setup cho local)
+- **Redis** - Caching (optional cho Phase 1)
+- **JWT** - Authentication (Phase 2)
+- **Swagger** - API documentation
 
 ### Frontend
-- **Vue.js 3** - Framework UI
-- **Element Plus** - Component library
-- **Pinia** - State management
-- **Vite** - Build tool
+- **Vue.js 2.6.x** - Framework UI
+- **Element UI** - Component library
+- **Vuex** - State management
+- **Webpack** - Build tool
 - **Axios** - HTTP client
 
 ## 📁 Cấu Trúc Dự Án
