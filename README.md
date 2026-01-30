@@ -1,245 +1,289 @@
 # Shopee Affiliate Link Shortener
 
-## 📋 Giới Thiệu
+Hệ thống rút gọn và quản lý link affiliate Shopee với Vue 2 và Spring Boot (Java 8).
 
-Hệ thống **Shopee Affiliate Link Shortener** là nền tảng web giúp affiliate marketers tạo, quản lý và theo dõi hiệu suất các link affiliate Shopee một cách chuyên nghiệp.
-
-## 🏗️ Kiến Trúc Công Nghệ
-
-### Backend
-- **Spring Boot 2.7.x** - Framework chính
-- **Java 8** - Programming language
-- **MySQL 8.0** - Database (dễ setup cho local)
-- **Redis** - Caching (optional cho Phase 1)
-- **JWT** - Authentication (Phase 2)
-- **Swagger** - API documentation
-
-### Frontend
-- **Vue.js 2.6.x** - Framework UI
-- **Element UI** - Component library
-- **Vuex** - State management
-- **Webpack** - Build tool
-- **Axios** - HTTP client
-
-## 📁 Cấu Trúc Dự Án
-
-```
-WEB_Getshortlink/
-├── backend/                 # Spring Boot application
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/
-│   │   │   └── resources/
-│   │   └── test/
-│   └── pom.xml
-├── frontend/                # Vue.js application
-│   ├── src/
-│   │   ├── components/
-│   │   ├── views/
-│   │   ├── router/
-│   │   ├── store/
-│   │   └── services/
-│   └── package.json
-├── docker-compose.yml       # Docker configuration
-├── ARCHITECTURE.md          # Tài liệu kiến trúc
-├── FEATURES.md              # Tài liệu chức năng
-└── README.md                # File này
-```
-
-## 🚀 Tính Năng Chính
-
-### 1. Quản Lý Link
-- ✅ Tạo link rút gọn tự động
-- ✅ Custom alias
-- ✅ QR Code generation
-- ✅ Bulk creation
-- ✅ Link expiration
-
-### 2. Tích Hợp Shopee
-- ✅ Tìm kiếm sản phẩm
-- ✅ Lấy thông tin chi tiết
-- ✅ Tạo affiliate link
-- ✅ Sync dữ liệu tự động
-
-### 3. Analytics
-- ✅ Click tracking
-- ✅ Conversion tracking
-- ✅ Geographic analytics
-- ✅ Device analytics
-- ✅ Real-time dashboard
-
-### 4. Bảo Mật
-- ✅ JWT Authentication
-- ✅ Password encryption
-- ✅ Rate limiting
-- ✅ HTTPS/SSL
-
-## 📦 Cài Đặt
+## 🚀 Quick Start - Chạy Local
 
 ### Yêu Cầu
-- Java 17+
-- Node.js 18+
-- PostgreSQL 15+
-- Redis 7+
-- Docker (optional)
 
-### Backend Setup
+- **Java 8** (JDK 1.8.0_201+)
+- **Node.js 12+** (khuyến nghị 14.x hoặc 16.x)
+- **Maven 3.6+** (hoặc dùng Maven Wrapper)
+
+### Bước 1: Clone Project
+
 ```bash
-cd backend
-./mvnw clean install
-./mvnw spring-boot:run
+git clone <repository-url>
+cd WEB_Getshortlink
 ```
 
-### Frontend Setup
+### Bước 2: Chạy Backend
+
+```bash
+cd backend
+
+# Chạy với Maven Wrapper (Windows)
+mvnw.cmd spring-boot:run
+
+# Hoặc với Maven đã cài
+mvn spring-boot:run
+```
+
+Backend sẽ chạy tại: **http://localhost:8080**
+
+- API: http://localhost:8080/api/v1
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- H2 Console: http://localhost:8080/api/h2-console
+
+**H2 Console Login:**
+- JDBC URL: `jdbc:h2:mem:affiliate_db`
+- Username: `sa`
+- Password: (để trống)
+
+### Bước 3: Chạy Frontend
+
 ```bash
 cd frontend
+
+# Cài đặt dependencies
 npm install
-npm run dev
+
+# Chạy dev server
+npm run serve
 ```
 
-### Docker Setup
-```bash
-docker-compose up -d
-```
+Frontend sẽ chạy tại: **http://localhost:8081**
 
-## 🔧 Cấu Hình
+### Bước 4: Test Application
 
-### Backend Configuration
-File: `backend/src/main/resources/application.yml`
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/affiliate_db
-    username: your_username
-    password: your_password
-  
-shopee:
-  api:
-    url: https://open-api.shopee.com
-    key: your_api_key
-    secret: your_api_secret
-```
-
-### Frontend Configuration
-File: `frontend/.env`
-```env
-VITE_API_URL=http://localhost:8080/api/v1
-VITE_APP_NAME=Shopee Link Shortener
-```
-
-## 📚 API Documentation
-
-API documentation có sẵn tại: `http://localhost:8080/swagger-ui.html`
-
-### Ví dụ API Endpoints
-
-#### Authentication
-```
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-```
-
-#### Links
-```
-POST /api/v1/links
-GET /api/v1/links
-GET /api/v1/links/{id}
-DELETE /api/v1/links/{id}
-```
-
-#### Shopee
-```
-GET /api/v1/shopee/products/search?keyword=iphone
-POST /api/v1/shopee/affiliate/create
-```
-
-## 🧪 Testing
-
-### Backend Tests
-```bash
-cd backend
-./mvnw test
-```
-
-### Frontend Tests
-```bash
-cd frontend
-npm run test
-```
-
-## 📈 Deployment
-
-### Production Build
-
-#### Backend
-```bash
-./mvnw clean package
-java -jar target/shortlink-0.0.1-SNAPSHOT.jar
-```
-
-#### Frontend
-```bash
-npm run build
-# Deploy dist/ folder to web server
-```
-
-### Docker Deployment
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-## 🔐 Security Best Practices
-
-1. **Environment Variables**: Không commit sensitive data
-2. **HTTPS**: Luôn sử dụng HTTPS trong production
-3. **Rate Limiting**: Cấu hình rate limiting phù hợp
-4. **Database Backup**: Backup định kỳ
-5. **Update Dependencies**: Cập nhật thư viện thường xuyên
-
-## 📊 Monitoring
-
-- **Health Check**: `http://localhost:8080/actuator/health`
-- **Metrics**: `http://localhost:8080/actuator/metrics`
-- **Logs**: Check `logs/` directory
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License.
-
-## 👥 Team
-
-- **Solution Architect**: [Your Name]
-- **Backend Developer**: [Team Member]
-- **Frontend Developer**: [Team Member]
-
-## 📞 Support
-
-- Email: support@example.com
-- Documentation: [Link to docs]
-- Issues: [GitHub Issues]
-
-## 🗺️ Roadmap
-
-- [x] Phase 1: MVP (Core features)
-- [ ] Phase 2: Advanced analytics
-- [ ] Phase 3: Mobile app
-- [ ] Phase 4: AI recommendations
-
-## 📖 Tài Liệu Liên Quan
-
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Kiến trúc chi tiết
-- [FEATURES.md](./FEATURES.md) - Danh sách chức năng
-- [API.md](./API.md) - API documentation
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Hướng dẫn deployment
+1. Mở trình duyệt: http://localhost:8081
+2. Click "Đăng Ký Ngay"
+3. Tạo tài khoản mới
+4. Đăng nhập và sử dụng!
 
 ---
 
-**Made with ❤️ for Affiliate Marketers**
+## 📁 Cấu Trúc Project
+
+```
+WEB_Getshortlink/
+├── backend/                    # Spring Boot Application
+│   ├── src/main/java/         # Java source code
+│   │   └── com/affiliate/shortlink/
+│   │       ├── controller/    # REST Controllers
+│   │       ├── service/       # Business Logic
+│   │       ├── repository/    # Data Access
+│   │       ├── model/         # Entities & DTOs
+│   │       ├── security/      # JWT Security
+│   │       ├── config/        # Configuration
+│   │       └── util/          # Utilities
+│   ├── src/main/resources/    # Configuration files
+│   └── pom.xml               # Maven dependencies
+│
+├── frontend/                  # Vue.js Application
+│   ├── src/
+│   │   ├── views/            # Page components
+│   │   ├── components/       # Reusable components
+│   │   ├── router/           # Vue Router
+│   │   ├── store/            # Vuex Store
+│   │   ├── services/         # API services
+│   │   └── utils/            # Utilities
+│   └── package.json          # NPM dependencies
+│
+└── database/                  # Database schemas
+    ├── schema.sql            # MySQL/H2 schema
+    └── schema-oracle.sql     # Oracle schema
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Java 8** - Programming language
+- **Spring Boot 2.7.18** - Framework
+- **Spring Security** - Authentication & Authorization
+- **JWT** - Token-based auth
+- **H2 Database** - Development (in-memory)
+- **MySQL/Oracle** - Production
+- **Swagger 2.x** - API documentation
+- **Maven** - Build tool
+
+### Frontend
+- **Vue.js 2.6.14** - JavaScript framework
+- **Vuex 3.x** - State management
+- **Vue Router 3.x** - Routing
+- **Element UI 2.15.x** - UI components
+- **Axios** - HTTP client
+- **Vue CLI 4.x** - Build tool
+
+---
+
+## 📝 API Endpoints
+
+### Authentication
+```
+POST   /api/v1/auth/register  - Đăng ký user mới
+POST   /api/v1/auth/login     - Đăng nhập
+GET    /api/v1/auth/me        - Lấy thông tin user hiện tại
+```
+
+### Link Management
+```
+POST   /api/v1/links          - Tạo link mới
+GET    /api/v1/links          - Lấy danh sách links
+GET    /api/v1/links/{id}     - Lấy link theo ID
+DELETE /api/v1/links/{id}     - Xóa link
+```
+
+### Redirect
+```
+GET    /r/{shortCode}         - Redirect đến original URL
+```
+
+---
+
+## 🗄️ Database Support
+
+Project hỗ trợ nhiều loại database:
+
+### Development (Default)
+```yaml
+Database: H2 (in-memory)
+Config: application-dev.yml
+Lợi ích: Zero setup, tự động chạy
+```
+
+### Production Options
+
+#### MySQL
+```yaml
+Database: MySQL 5.7+
+Config: application-prod.yml
+Command: export SPRING_PROFILES_ACTIVE=prod
+```
+
+#### Oracle
+```yaml
+Database: Oracle 12c+
+Config: application-oracle.yml
+Command: export SPRING_PROFILES_ACTIVE=oracle
+```
+
+Xem chi tiết: [DATABASE_COMPARISON.md](./DATABASE_COMPARISON.md)
+
+---
+
+## 🔐 Security
+
+- **JWT Authentication** - Token-based auth
+- **BCrypt Password Hashing** - Secure password storage
+- **CORS Configuration** - Cross-origin requests
+- **Spring Security** - Comprehensive security
+
+---
+
+## 📚 Documentation
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Kiến trúc hệ thống
+- [QUICKSTART.md](./QUICKSTART.md) - Hướng dẫn chi tiết
+- [DATABASE_COMPARISON.md](./DATABASE_COMPARISON.md) - So sánh databases
+- [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md) - Migration guide
+
+---
+
+## 🐛 Troubleshooting
+
+### Backend không start?
+
+**Java version không đúng:**
+```bash
+java -version  # Phải là Java 8 (1.8.x)
+```
+
+**Port 8080 đã được sử dụng:**
+```yaml
+# Sửa trong application.yml
+server:
+  port: 8081
+```
+
+### Frontend không start?
+
+**Node modules lỗi:**
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Port 8081 đã được sử dụng:**
+```javascript
+// Sửa trong vue.config.js
+devServer: {
+  port: 8082
+}
+```
+
+---
+
+## 🎯 Features
+
+- ✅ User Registration & Login
+- ✅ JWT Authentication
+- ✅ Create Short Links
+- ✅ Click Tracking
+- ✅ Link Management
+- ✅ Dashboard với Statistics
+- ⏳ Shopee API Integration (Coming soon)
+- ⏳ Advanced Analytics (Coming soon)
+- ⏳ QR Code Generation (Coming soon)
+
+---
+
+## 🚀 Deployment
+
+### Build Production
+
+**Backend:**
+```bash
+cd backend
+mvn clean package -DskipTests
+# JAR file: target/shortlink-1.0.0.jar
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm run build
+# Static files: dist/
+```
+
+### Run Production
+
+**Backend:**
+```bash
+java -jar target/shortlink-1.0.0.jar --spring.profiles.active=prod
+```
+
+**Frontend:**
+Serve `dist/` folder với Nginx hoặc web server khác.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👥 Support
+
+Nếu gặp vấn đề:
+1. Kiểm tra logs của Backend và Frontend
+2. Xem phần Troubleshooting
+3. Đọc documentation files
+4. Tạo issue trên GitHub
+
+---
+
+**Happy Coding! 🎉**
