@@ -1,46 +1,115 @@
-/* Shopee Theme - Orange & White */
+/* Enhanced Shopee Theme - Premium Edition */
 
+/* ===========================
+   COLOR SYSTEM
+   =========================== */
 :root {
-    /* Shopee Orange Colors */
+    /* Primary Palette - Shopee Orange */
+    --shopee-primary-50: #fff6f4;
+    --shopee-primary-100: #ffe8e0;
+    --shopee-primary-200: #ffd1c1;
+    --shopee-primary-300: #ffb9a2;
+    --shopee-primary-400: #ff8563;
+    --shopee-primary-500: #ee4d2d;
+    /* Main Brand Color */
+    --shopee-primary-600: #d73211;
+    --shopee-primary-700: #b82a0e;
+    --shopee-primary-800: #99230c;
+    --shopee-primary-900: #7a1c09;
+
+    /* Legacy support */
     --shopee-primary: #ee4d2d;
     --shopee-primary-dark: #d73211;
     --shopee-primary-light: #f05d40;
     --shopee-orange-light: #fff6f4;
 
-    /* Shopee Secondary Colors */
+    /* Secondary Colors */
     --shopee-secondary: #ff6b35;
     --shopee-accent: #ff9966;
 
+    /* Success Palette */
+    --shopee-success-50: #e8f5f3;
+    --shopee-success-100: #c1e8e3;
+    --shopee-success-500: #26aa99;
+    --shopee-success-600: #1e8e7e;
+    --shopee-success-700: #177066;
+
+    /* Legacy support */
+    --shopee-success: #26aa99;
+
+    /* Warning Palette */
+    --shopee-warning-50: #fff8e1;
+    --shopee-warning-500: #ffa500;
+    --shopee-warning: #ffa500;
+
+    /* Danger/Error */
+    --shopee-danger: #ee4d2d;
+
+    /* Info */
+    --shopee-info: #1890ff;
+
     /* Neutral Colors */
     --shopee-white: #ffffff;
+    --shopee-gray-50: #fafafa;
+    --shopee-gray-100: #f5f5f5;
+    --shopee-gray-200: #eeeeee;
+    --shopee-gray-300: #e0e0e0;
+    --shopee-gray-400: #bdbdbd;
+    --shopee-gray-500: #9e9e9e;
+    --shopee-gray-600: #757575;
+    --shopee-gray-700: #616161;
+    --shopee-gray-800: #424242;
+    --shopee-gray-900: #212121;
+    --shopee-black: #333333;
+
+    /* Legacy support */
     --shopee-gray-light: #f5f5f5;
     --shopee-gray: #e5e5e5;
     --shopee-gray-dark: #757575;
-    --shopee-black: #333333;
 
     /* Text Colors */
     --shopee-text-primary: #333333;
     --shopee-text-secondary: #757575;
     --shopee-text-light: #999999;
+    --shopee-text-white: #ffffff;
 
-    /* Status Colors */
-    --shopee-success: #26aa99;
-    --shopee-warning: #ffa500;
-    --shopee-danger: #ee4d2d;
-    --shopee-info: #1890ff;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #ee4d2d 0%, #ff6b35 100%);
+    --gradient-primary-hover: linear-gradient(135deg, #d73211 0%, #ee4d2d 100%);
+    --gradient-success: linear-gradient(135deg, #26aa99 0%, #34d399 100%);
+    --gradient-card: linear-gradient(135deg, #ffffff 0%, #fff6f4 100%);
+    --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
 
     /* Shadows */
-    --shopee-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shopee-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-    --shopee-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --shopee-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shopee-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shopee-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --shopee-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --shopee-shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.2);
+
+    /* Colored Shadows */
+    --shopee-shadow-primary: 0 4px 12px rgba(238, 77, 45, 0.25);
+    --shopee-shadow-primary-lg: 0 8px 20px rgba(238, 77, 45, 0.35);
+    --shopee-shadow-success: 0 4px 12px rgba(38, 170, 153, 0.25);
 
     /* Border Radius */
-    --shopee-radius-sm: 2px;
-    --shopee-radius-md: 4px;
-    --shopee-radius-lg: 8px;
+    --shopee-radius-xs: 2px;
+    --shopee-radius-sm: 4px;
+    --shopee-radius-md: 8px;
+    --shopee-radius-lg: 12px;
+    --shopee-radius-xl: 16px;
+    --shopee-radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Global Styles */
+/* ===========================
+   GLOBAL OVERRIDES
+   =========================== */
 * {
     margin: 0;
     padding: 0;
@@ -48,28 +117,70 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--shopee-gray-light);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--shopee-gray-100);
     color: var(--shopee-text-primary);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Override Element UI Colors */
+/* ===========================
+   ELEMENT UI OVERRIDES
+   =========================== */
+
+/* Buttons */
+.el-button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    border-radius: var(--shopee-radius-md);
+    transition: all var(--transition-base);
+}
+
 .el-button--primary {
-    background-color: var(--shopee-primary) !important;
-    border-color: var(--shopee-primary) !important;
+    background: var(--gradient-primary) !important;
+    border: none !important;
+    box-shadow: var(--shopee-shadow-primary);
 }
 
 .el-button--primary:hover,
 .el-button--primary:focus {
-    background-color: var(--shopee-primary-dark) !important;
-    border-color: var(--shopee-primary-dark) !important;
+    background: var(--gradient-primary-hover) !important;
+    box-shadow: var(--shopee-shadow-primary-lg);
+    transform: translateY(-2px);
+}
+
+.el-button--primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shopee-shadow-sm);
+}
+
+.el-button--success {
+    background: var(--gradient-success) !important;
+    border: none !important;
+    box-shadow: var(--shopee-shadow-success);
+}
+
+.el-button--success:hover,
+.el-button--success:focus {
+    background: linear-gradient(135deg, #1e8e7e 0%, #26aa99 100%) !important;
+    transform: translateY(-2px);
+}
+
+/* Inputs */
+.el-input__inner {
+    border-radius: var(--shopee-radius-md);
+    transition: all var(--transition-base);
+    font-family: 'Inter', sans-serif;
 }
 
 .el-input__inner:focus {
     border-color: var(--shopee-primary) !important;
+    box-shadow: 0 0 0 3px var(--shopee-primary-50);
 }
 
+/* Checkboxes & Radios */
 .el-checkbox__input.is-checked .el-checkbox__inner {
     background-color: var(--shopee-primary) !important;
     border-color: var(--shopee-primary) !important;
@@ -80,11 +191,13 @@ body {
     border-color: var(--shopee-primary) !important;
 }
 
+/* Switch */
 .el-switch.is-checked .el-switch__core {
     background-color: var(--shopee-primary) !important;
     border-color: var(--shopee-primary) !important;
 }
 
+/* Links */
 .el-link--primary {
     color: var(--shopee-primary) !important;
 }
@@ -93,104 +206,174 @@ body {
     color: var(--shopee-primary-dark) !important;
 }
 
-/* Card Styles */
+/* Tags */
+.el-tag--primary {
+    background-color: var(--shopee-primary-50);
+    border-color: var(--shopee-primary-200);
+    color: var(--shopee-primary);
+}
+
+.el-tag--success {
+    background-color: var(--shopee-success-50);
+    border-color: var(--shopee-success-100);
+    color: var(--shopee-success);
+}
+
+/* Progress */
+.el-progress-bar__inner {
+    background: var(--gradient-success);
+}
+
+/* ===========================
+   CARD STYLES
+   =========================== */
 .el-card {
     border-radius: var(--shopee-radius-md);
     box-shadow: var(--shopee-shadow-sm);
-    border: none;
+    border: 1px solid var(--shopee-gray-200);
+    transition: all var(--transition-base);
+    overflow: hidden;
 }
 
 .el-card:hover {
     box-shadow: var(--shopee-shadow-md);
-    transition: box-shadow 0.3s ease;
+    transform: translateY(-2px);
 }
 
-/* Header Styles */
+.el-card__header {
+    background: var(--shopee-gray-50);
+    border-bottom: 1px solid var(--shopee-gray-200);
+    font-weight: 600;
+}
+
+/* ===========================
+   HEADER STYLES
+   =========================== */
 .shopee-header {
-    background: linear-gradient(135deg, var(--shopee-primary) 0%, var(--shopee-secondary) 100%);
+    background: var(--gradient-primary);
     color: white;
     padding: 16px 24px;
     box-shadow: var(--shopee-shadow-md);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Button Styles */
+.shopee-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===========================
+   BUTTON STYLES
+   =========================== */
 .shopee-button {
-    background: var(--shopee-primary);
+    background: var(--gradient-primary);
     color: white;
     border: none;
     padding: 10px 24px;
-    border-radius: var(--shopee-radius-sm);
+    border-radius: var(--shopee-radius-md);
     font-weight: 500;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shopee-shadow-sm);
+    transition: all var(--transition-base);
+    box-shadow: var(--shopee-shadow-primary);
 }
 
 .shopee-button:hover {
-    background: var(--shopee-primary-dark);
-    box-shadow: var(--shopee-shadow-md);
-    transform: translateY(-1px);
+    background: var(--gradient-primary-hover);
+    box-shadow: var(--shopee-shadow-primary-lg);
+    transform: translateY(-2px);
 }
 
 .shopee-button:active {
     transform: translateY(0);
+    box-shadow: var(--shopee-shadow-sm);
 }
 
 .shopee-button-outline {
     background: white;
     color: var(--shopee-primary);
-    border: 1px solid var(--shopee-primary);
+    border: 2px solid var(--shopee-primary);
     padding: 10px 24px;
-    border-radius: var(--shopee-radius-sm);
+    border-radius: var(--shopee-radius-md);
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
 }
 
 .shopee-button-outline:hover {
-    background: var(--shopee-orange-light);
+    background: var(--shopee-primary-50);
     border-color: var(--shopee-primary-dark);
     color: var(--shopee-primary-dark);
+    transform: translateY(-2px);
 }
 
-/* Badge Styles */
+/* ===========================
+   BADGE STYLES
+   =========================== */
 .shopee-badge {
-    background: var(--shopee-primary);
+    background: var(--gradient-primary);
     color: white;
     padding: 4px 12px;
-    border-radius: 12px;
+    border-radius: var(--shopee-radius-full);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
+    display: inline-block;
+    box-shadow: var(--shopee-shadow-sm);
 }
 
 .shopee-badge-success {
-    background: var(--shopee-success);
+    background: var(--gradient-success);
 }
 
 .shopee-badge-warning {
-    background: var(--shopee-warning);
+    background: linear-gradient(135deg, #ffa500 0%, #ffb84d 100%);
 }
 
-/* Tag Styles */
+/* ===========================
+   TAG STYLES
+   =========================== */
 .shopee-tag {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     padding: 4px 12px;
-    background: var(--shopee-orange-light);
+    background: var(--shopee-primary-50);
     color: var(--shopee-primary);
     border-radius: var(--shopee-radius-sm);
     font-size: 12px;
     font-weight: 500;
-    border: 1px solid var(--shopee-primary);
+    border: 1px solid var(--shopee-primary-200);
 }
 
-/* Container Styles */
+/* ===========================
+   CONTAINER STYLES
+   =========================== */
 .shopee-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px;
 }
 
-/* Grid Styles */
+/* ===========================
+   GRID STYLES
+   =========================== */
 .shopee-grid {
     display: grid;
     gap: 20px;
@@ -208,6 +391,12 @@ body {
     grid-template-columns: repeat(4, 1fr);
 }
 
+@media (max-width: 1024px) {
+    .shopee-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
 
     .shopee-grid-2,
@@ -217,50 +406,96 @@ body {
     }
 }
 
-/* Stat Card */
+/* ===========================
+   STAT CARD
+   =========================== */
 .shopee-stat-card {
     background: white;
     padding: 24px;
     border-radius: var(--shopee-radius-md);
     box-shadow: var(--shopee-shadow-sm);
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
+    border: 1px solid var(--shopee-gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.shopee-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
 }
 
 .shopee-stat-card:hover {
     box-shadow: var(--shopee-shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
 }
 
 .shopee-stat-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--shopee-orange-light);
+    width: 56px;
+    height: 56px;
+    background: var(--shopee-primary-50);
     color: var(--shopee-primary);
-    border-radius: 50%;
+    border-radius: var(--shopee-radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 28px;
     margin-bottom: 12px;
+    position: relative;
+}
+
+.shopee-stat-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--shopee-radius-lg);
+    background: var(--shopee-primary);
+    opacity: 0.1;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0;
+    }
 }
 
 .shopee-stat-number {
     font-size: 32px;
-    font-weight: bold;
+    font-weight: 800;
     color: var(--shopee-primary);
     margin: 8px 0;
+    letter-spacing: -0.02em;
 }
 
 .shopee-stat-label {
     color: var(--shopee-text-secondary);
     font-size: 14px;
+    font-weight: 500;
 }
 
-/* Link Styles */
+/* ===========================
+   LINK STYLES
+   =========================== */
 a {
     color: var(--shopee-primary);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color var(--transition-base);
+    font-weight: 500;
 }
 
 a:hover {
@@ -268,7 +503,9 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Form Styles */
+/* ===========================
+   FORM STYLES
+   =========================== */
 .shopee-form-item {
     margin-bottom: 20px;
 }
@@ -278,24 +515,28 @@ a:hover {
     margin-bottom: 8px;
     color: var(--shopee-text-primary);
     font-weight: 500;
+    font-size: 14px;
 }
 
 .shopee-input {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid var(--shopee-gray);
-    border-radius: var(--shopee-radius-sm);
+    border: 1px solid var(--shopee-gray-300);
+    border-radius: var(--shopee-radius-md);
     font-size: 14px;
-    transition: border-color 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    transition: all var(--transition-base);
 }
 
 .shopee-input:focus {
     outline: none;
     border-color: var(--shopee-primary);
-    box-shadow: 0 0 0 2px var(--shopee-orange-light);
+    box-shadow: 0 0 0 3px var(--shopee-primary-50);
 }
 
-/* Table Styles */
+/* ===========================
+   TABLE STYLES
+   =========================== */
 .shopee-table {
     width: 100%;
     background: white;
@@ -305,50 +546,86 @@ a:hover {
 }
 
 .shopee-table th {
-    background: var(--shopee-gray-light);
+    background: var(--shopee-gray-50);
     padding: 12px;
     text-align: left;
     font-weight: 600;
     color: var(--shopee-text-primary);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .shopee-table td {
     padding: 12px;
-    border-top: 1px solid var(--shopee-gray);
+    border-top: 1px solid var(--shopee-gray-200);
+}
+
+.shopee-table tr {
+    transition: background var(--transition-fast);
 }
 
 .shopee-table tr:hover {
-    background: var(--shopee-orange-light);
+    background: var(--shopee-primary-50);
 }
 
-/* Alert Styles */
+/* Enhanced Element UI Table */
+.el-table th {
+    background: var(--shopee-gray-50) !important;
+    font-weight: 600;
+    color: var(--shopee-text-primary);
+}
+
+.el-table tr:hover {
+    background: var(--shopee-primary-50) !important;
+}
+
+.el-table td,
+.el-table th {
+    padding: 16px 12px;
+}
+
+/* ===========================
+   ALERT STYLES
+   =========================== */
 .shopee-alert {
     padding: 12px 16px;
-    border-radius: var(--shopee-radius-sm);
+    border-radius: var(--shopee-radius-md);
     margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
 }
 
 .shopee-alert-success {
-    background: #e8f5e9;
-    color: var(--shopee-success);
+    background: var(--shopee-success-50);
+    color: var(--shopee-success-700);
     border-left: 4px solid var(--shopee-success);
 }
 
 .shopee-alert-warning {
-    background: #fff3e0;
-    color: var(--shopee-warning);
+    background: var(--shopee-warning-50);
+    color: #b36200;
     border-left: 4px solid var(--shopee-warning);
 }
 
 .shopee-alert-danger {
-    background: var(--shopee-orange-light);
-    color: var(--shopee-danger);
+    background: var(--shopee-primary-50);
+    color: var(--shopee-primary-700);
     border-left: 4px solid var(--shopee-danger);
 }
 
-/* Loading Spinner */
+.shopee-alert-info {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border-left: 4px solid var(--shopee-info);
+}
+
+/* ===========================
+   LOADING SPINNER
+   =========================== */
 .shopee-spinner {
-    border: 3px solid var(--shopee-gray);
+    border: 3px solid var(--shopee-gray-200);
     border-top: 3px solid var(--shopee-primary);
     border-radius: 50%;
     width: 40px;
@@ -366,7 +643,9 @@ a:hover {
     }
 }
 
-/* Utility Classes */
+/* ===========================
+   UTILITY CLASSES
+   =========================== */
 .text-primary {
     color: var(--shopee-primary) !important;
 }
@@ -375,12 +654,24 @@ a:hover {
     color: var(--shopee-text-secondary) !important;
 }
 
+.text-success {
+    color: var(--shopee-success) !important;
+}
+
 .bg-primary {
     background-color: var(--shopee-primary) !important;
 }
 
+.bg-gradient-primary {
+    background: var(--gradient-primary) !important;
+}
+
 .bg-white {
     background-color: var(--shopee-white) !important;
+}
+
+.shadow-xs {
+    box-shadow: var(--shopee-shadow-xs) !important;
 }
 
 .shadow-sm {
@@ -405,4 +696,54 @@ a:hover {
 
 .rounded-lg {
     border-radius: var(--shopee-radius-lg) !important;
+}
+
+.rounded-full {
+    border-radius: var(--shopee-radius-full) !important;
+}
+
+/* ===========================
+   TRANSITIONS
+   =========================== */
+.transition-all {
+    transition: all var(--transition-base);
+}
+
+.transition-fast {
+    transition: all var(--transition-fast);
+}
+
+.transition-slow {
+    transition: all var(--transition-slow);
+}
+
+/* ===========================
+   HOVER EFFECTS
+   =========================== */
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shopee-shadow-md);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* ===========================
+   RESPONSIVE UTILITIES
+   =========================== */
+@media (max-width: 768px) {
+    .shopee-container {
+        padding: 16px;
+    }
+
+    .shopee-stat-number {
+        font-size: 24px;
+    }
+
+    .shopee-stat-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+    }
 }

@@ -3,7 +3,7 @@
     <!-- Shopee-style Header -->
     <div class="shopee-hero">
       <div class="shopee-container">
-        <div class="hero-content">
+        <div class="hero-content animate-fade-in-up">
           <h1 class="hero-title">
             <i class="el-icon-link"></i>
             Shopee Affiliate Link Shortener
@@ -120,30 +120,60 @@ export default {
 .shopee-hero {
   background: linear-gradient(135deg, #ee4d2d 0%, #ff6b35 100%);
   color: white;
-  padding: 80px 20px;
+  padding: 100px 20px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.shopee-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .hero-content {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-title {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .hero-title i {
-  margin-right: 12px;
+  margin-right: 16px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .hero-subtitle {
-  font-size: 20px;
-  margin-bottom: 40px;
+  font-size: 22px;
+  margin-bottom: 48px;
   opacity: 0.95;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .hero-buttons {
@@ -151,6 +181,31 @@ export default {
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.hero-buttons .el-button {
+  min-width: 180px;
+  height: 52px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-buttons .el-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-buttons .el-button--large.is-plain {
+  background: white;
+  color: #ee4d2d;
+  border: 2px solid white;
+}
+
+.hero-buttons .el-button--large.is-plain:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: white;
 }
 
 .features-section {

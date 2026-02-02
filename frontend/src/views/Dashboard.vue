@@ -17,7 +17,15 @@
     <!-- Main Content -->
     <div class="shopee-container" style="padding-top: 24px;">
 
+      <!-- Loading Skeletons -->
+      <div v-if="loading" class="balance-cards-grid">
+        <SkeletonLoader type="balance" />
+        <SkeletonLoader type="balance" />
+        <SkeletonLoader type="balance" />
+      </div>
+
       <!-- Balance Cards -->
+      <div v-else class="animate-fade-in-up">
       <div class="balance-cards-grid">
         <!-- Total Balance -->
         <el-card class="balance-card balance-total">
@@ -26,7 +34,9 @@
           </div>
           <div class="balance-info">
             <div class="balance-label">Tổng Số Dư</div>
-            <div class="balance-amount">{{ formatMoney(totalBalance) }}</div>
+            <div class="balance-amount">
+              <AnimatedNumber :value="totalBalance" :format="formatMoney" />
+            </div>
             <div class="balance-note">Đã hoàn + Chờ hoàn</div>
           </div>
         </el-card>
@@ -38,7 +48,9 @@
           </div>
           <div class="balance-info">
             <div class="balance-label">Đã Hoàn</div>
-            <div class="balance-amount success">{{ formatMoney(availableBalance) }}</div>
+            <div class="balance-amount success">
+              <AnimatedNumber :value="availableBalance" :format="formatMoney" />
+            </div>
             <div class="balance-note">Có thể rút từ {{ formatMoney(minWithdraw) }}</div>
           </div>
         </el-card>
@@ -50,14 +62,18 @@
           </div>
           <div class="balance-info">
             <div class="balance-label">Chờ Hoàn</div>
-            <div class="balance-amount pending">{{ formatMoney(pendingBalance) }}</div>
+            <div class="balance-amount pending">
+              <AnimatedNumber :value="pendingBalance" :format="formatMoney" />
+            </div>
             <div class="balance-note">{{ pendingOrders }} đơn đang chờ</div>
           </div>
         </el-card>
       </div>
 
+      </div>
+
       <!-- Quick Stats -->
-      <div class="quick-stats-grid">
+      <div v-if="!loading" class="quick-stats-grid animate-fade-in-up" style="animation-delay: 0.1s;">
         <div class="stat-item">
           <i class="el-icon-shopping-cart-2"></i>
           <div class="stat-value">{{ totalOrders }}</div>
@@ -258,9 +274,15 @@
 <script>
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import AnimatedNumber from '@/components/AnimatedNumber.vue'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 export default {
   name: 'Dashboard',
+  components: {
+    AnimatedNumber,
+    SkeletonLoader
+  },
   data() {
     return {
       // Balance
@@ -280,6 +302,9 @@ export default {
       orders: [],
       dateRange: null,
       exporting: false,
+      
+      // Loading state
+      loading: true,
 
       // Withdraw
       showWithdrawDialog: false,
@@ -395,6 +420,8 @@ export default {
       } catch (error) {
         console.error('Failed to load dashboard data:', error)
         this.$message.error('Không thể tải dữ liệu')
+      } finally {
+        this.loading = false
       }
     },
     formatMoney(amount) {
@@ -612,13 +639,33 @@ export default {
 
 .balance-card {
   border: none;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(238, 77, 45, 0.03) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .balance-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
 .balance-card::v-deep .el-card__body {
@@ -626,17 +673,44 @@ export default {
   align-items: center;
   gap: 16px;
   padding: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .balance-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 32px;
   color: white;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.balance-icon::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: inherit;
+  opacity: 0.3;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
 }
 
 .balance-total .balance-icon {
@@ -653,19 +727,25 @@ export default {
 
 .balance-info {
   flex: 1;
+  min-width: 0;
 }
 
 .balance-label {
   font-size: 13px;
   color: #757575;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .balance-amount {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 32px;
+  font-weight: 800;
   color: #333;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
 .balance-amount.success {
@@ -679,6 +759,7 @@ export default {
 .balance-note {
   font-size: 12px;
   color: #999;
+  font-weight: 500;
 }
 
 /* Quick Stats */
@@ -691,34 +772,64 @@ export default {
 
 .stat-item {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 24px 20px;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ee4d2d 0%, #ff6b35 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .stat-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  border-color: rgba(238, 77, 45, 0.2);
+}
+
+.stat-item:hover::before {
+  transform: scaleX(1);
 }
 
 .stat-item i {
-  font-size: 32px;
+  font-size: 36px;
   color: #ee4d2d;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover i {
+  transform: scale(1.1);
 }
 
 .stat-value {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 800;
   color: #333;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
 }
 
 .stat-label {
   font-size: 13px;
   color: #757575;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Card Header */

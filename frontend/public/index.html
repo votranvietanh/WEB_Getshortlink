@@ -10,6 +10,11 @@
   <meta name="description" content="Tạo và quản lý link rút gọn cho Shopee Affiliate">
   <meta name="keywords" content="shopee, affiliate, link shortener, rút gọn link">
   <meta name="theme-color" content="#ee4d2d">
+
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* Loading Screen */
     #loading {
@@ -43,8 +48,23 @@
     .loading-text {
       color: white;
       margin-top: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
